@@ -10,7 +10,7 @@ public class QuantityRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String operation; // "CONVERT", "COMPARE", "ADD", "SUBTRACT"
+    private String operation; 
     private Double value1;
     private String unit1;
     private Double value2;
@@ -37,7 +37,7 @@ public class QuantityRecord {
         this.userEmail = userEmail;
     }
 
-    // Getters and Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

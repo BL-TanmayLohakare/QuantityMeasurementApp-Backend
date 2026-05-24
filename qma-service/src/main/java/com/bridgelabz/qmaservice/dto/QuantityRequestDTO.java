@@ -6,9 +6,9 @@ public class QuantityRequestDTO {
     private double value2;
     private String unit2;
     private String targetUnit;
-    private String category; // "LENGTH", "VOLUME", "TEMPERATURE", "WEIGHT"
+    private String category; 
 
-    // Getters and Setters
+    
     public double getValue1() { return value1; }
     public void setValue1(double value1) { this.value1 = value1; }
 

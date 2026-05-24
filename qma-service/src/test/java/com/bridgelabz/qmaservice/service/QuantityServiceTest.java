@@ -34,11 +34,11 @@ public class QuantityServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         
-        // Mock Security Context
+        
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken("test@test.com", null);
         SecurityContextHolder.getContext().setAuthentication(auth);
         
-        // Mock Auth Client
+        
         User mockUser = new User();
         mockUser.setEmail("test@test.com");
         when(authClient.getUserDetails("test@test.com")).thenReturn(mockUser);

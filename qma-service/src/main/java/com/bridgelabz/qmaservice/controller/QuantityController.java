@@ -6,15 +6,14 @@ import com.bridgelabz.qmaservice.service.IQuantityService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-// UC15: Controller Layer enforcing N-Tier Architecture
-// UC17: Spring REST API Controller
+
+
 @RestController
 @RequestMapping("/api/quantity")
 public class QuantityController {
 
     private final IQuantityService quantityService;
 
-    // Dependency Injection Pattern (Constructor Injection)
     @Autowired
     public QuantityController(IQuantityService quantityService) {
         this.quantityService = quantityService;

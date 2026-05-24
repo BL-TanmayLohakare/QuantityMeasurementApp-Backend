@@ -16,7 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.util.Optional;
 
-// UC18: Handler for Successful OAuth2 Login
+
 @Component
 public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
@@ -33,18 +33,14 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
 
-        // Save or update user
         Optional<User> userOptional = userRepository.findByEmail(email);
         if (userOptional.isEmpty()) {
             User newUser = new User(email, name, null, "google");
             userRepository.save(newUser);
         }
 
-        // Generate JWT Token
         String token = jwtUtils.generateJwtToken(email);
 
-        // Redirect to a frontend page with the token as a query parameter
-        // Adjust the redirection URL to match your frontend setup
         String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/")
                 .queryParam("token", token)
                 .build().toUriString();

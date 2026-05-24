@@ -21,6 +21,6 @@ Write-Host "Waiting for services to register with Eureka (20s)..."
 Start-Sleep -Seconds 20
 
 Write-Host "Starting Frontend..."
-Start-Process -FilePath "npm.cmd" -ArgumentList "run dev" -WorkingDirectory "d:\QMA-frontend\frontend"
+Start-Process -FilePath "npm.cmd" -ArgumentList "run dev" -WorkingDirectory "$PSScriptRoot\..\QMA-frontend\frontend"
 
 Write-Host "Project started!"

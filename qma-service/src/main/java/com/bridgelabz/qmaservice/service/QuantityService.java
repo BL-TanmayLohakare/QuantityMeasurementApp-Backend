@@ -20,9 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// UC15: Service Layer enforcing Single Responsibility Principle (SRP)
-// UC16: Layer Integration with Database Persistence
-// UC17: Spring Services, Dependency Injection, JPA Integration, Logging, Scopes
+
+
+
 @Service
 @Scope("singleton")
 public class QuantityService implements IQuantityService {
@@ -31,7 +31,6 @@ public class QuantityService implements IQuantityService {
     private final IQuantityRepository repository;
     private final AuthClient authClient;
 
-    // Dependency Injection (Spring Autowired)
     @Autowired
     public QuantityService(IQuantityRepository repository, AuthClient authClient) {
         this.repository = repository;
@@ -48,7 +47,6 @@ public class QuantityService implements IQuantityService {
         return null;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     private Unit getUnitEnum(String category, String unitStr) {
         if (category == null || unitStr == null) {
             logger.error("Category or Unit is null");
@@ -75,17 +73,16 @@ public class QuantityService implements IQuantityService {
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public double convertQuantity(QuantityRequestDTO requestDTO) {
         logger.info("Processing conversion request for {} to {}", requestDTO.getUnit1(), requestDTO.getTargetUnit());
         Unit sourceUnit = getUnitEnum(requestDTO.getCategory(), requestDTO.getUnit1());
         Unit targetUnitEnum = getUnitEnum(requestDTO.getCategory(), requestDTO.getTargetUnit());
 
-        Quantity quantity = new Quantity<>(requestDTO.getValue1(), sourceUnit);
-        Quantity converted = quantity.convertTo(targetUnitEnum);
+        Quantity<Unit> quantity = new Quantity<>(requestDTO.getValue1(), sourceUnit);
+        Quantity<Unit> converted = quantity.convertTo(targetUnitEnum);
         double result = converted.getValue();
 
-        // UC17: Persist with Spring Data JPA
+        
         if (repository != null) {
             User user = getCurrentUser();
             String email = (user != null) ? user.getEmail() : "Anonymous";
@@ -99,18 +96,17 @@ public class QuantityService implements IQuantityService {
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public double compareQuantities(QuantityRequestDTO requestDTO) {
         logger.info("Processing comparison request for {} and {}", requestDTO.getUnit1(), requestDTO.getUnit2());
         Unit unit1 = getUnitEnum(requestDTO.getCategory(), requestDTO.getUnit1());
         Unit unit2 = getUnitEnum(requestDTO.getCategory(), requestDTO.getUnit2());
 
-        Quantity q1 = new Quantity<>(requestDTO.getValue1(), unit1);
-        Quantity q2 = new Quantity<>(requestDTO.getValue2(), unit2);
+        Quantity<Unit> q1 = new Quantity<>(requestDTO.getValue1(), unit1);
+        Quantity<Unit> q2 = new Quantity<>(requestDTO.getValue2(), unit2);
 
         double result = q1.equals(q2) ? 1.0 : 0.0;
 
-        // UC17: Persist with Spring Data JPA
+        
         if (repository != null) {
             User user = getCurrentUser();
             String email = (user != null) ? user.getEmail() : "Anonymous";
@@ -124,7 +120,6 @@ public class QuantityService implements IQuantityService {
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public double addQuantities(QuantityRequestDTO requestDTO) {
         logger.info("Processing addition request for {} and {} to target {}", requestDTO.getUnit1(),
                 requestDTO.getUnit2(), requestDTO.getTargetUnit());
@@ -132,13 +127,13 @@ public class QuantityService implements IQuantityService {
         Unit unit2 = getUnitEnum(requestDTO.getCategory(), requestDTO.getUnit2());
         Unit targetUnitEnum = getUnitEnum(requestDTO.getCategory(), requestDTO.getTargetUnit());
 
-        Quantity q1 = new Quantity<>(requestDTO.getValue1(), unit1);
-        Quantity q2 = new Quantity<>(requestDTO.getValue2(), unit2);
+        Quantity<Unit> q1 = new Quantity<>(requestDTO.getValue1(), unit1);
+        Quantity<Unit> q2 = new Quantity<>(requestDTO.getValue2(), unit2);
 
-        Quantity res = q1.add(q2, targetUnitEnum);
+        Quantity<Unit> res = q1.add(q2, targetUnitEnum);
         double result = res.getValue();
 
-        // UC17: Persist with Spring Data JPA
+        
         if (repository != null) {
             User user = getCurrentUser();
             String email = (user != null) ? user.getEmail() : "Anonymous";
@@ -152,7 +147,6 @@ public class QuantityService implements IQuantityService {
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     public double subtractQuantities(QuantityRequestDTO requestDTO) {
         logger.info("Processing subtraction request for {} and {} to target {}", requestDTO.getUnit1(),
                 requestDTO.getUnit2(), requestDTO.getTargetUnit());
@@ -160,13 +154,13 @@ public class QuantityService implements IQuantityService {
         Unit unit2 = getUnitEnum(requestDTO.getCategory(), requestDTO.getUnit2());
         Unit targetUnitEnum = getUnitEnum(requestDTO.getCategory(), requestDTO.getTargetUnit());
 
-        Quantity q1 = new Quantity<>(requestDTO.getValue1(), unit1);
-        Quantity q2 = new Quantity<>(requestDTO.getValue2(), unit2);
+        Quantity<Unit> q1 = new Quantity<>(requestDTO.getValue1(), unit1);
+        Quantity<Unit> q2 = new Quantity<>(requestDTO.getValue2(), unit2);
 
-        Quantity res = q1.subtract(q2, targetUnitEnum);
+        Quantity<Unit> res = q1.subtract(q2, targetUnitEnum);
         double result = res.getValue();
 
-        // UC17: Persist with Spring Data JPA
+        
         if (repository != null) {
             User user = getCurrentUser();
             String email = (user != null) ? user.getEmail() : "Anonymous";

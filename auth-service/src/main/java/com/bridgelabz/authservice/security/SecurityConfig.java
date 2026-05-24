@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-// UC18: Security Configuration for OAuth2 and JWT
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

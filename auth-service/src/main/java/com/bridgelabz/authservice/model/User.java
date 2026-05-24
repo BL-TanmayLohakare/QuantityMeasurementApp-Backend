@@ -14,7 +14,7 @@ public class User {
 
     private String name;
     private String password;
-    private String provider; // "local", "google"
+    private String provider; 
 
     public User() {}
 
@@ -25,7 +25,7 @@ public class User {
         this.provider = provider;
     }
 
-    // Getters and Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

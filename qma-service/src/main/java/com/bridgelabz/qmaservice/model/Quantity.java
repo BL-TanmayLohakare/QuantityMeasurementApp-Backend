@@ -35,18 +35,17 @@ public class Quantity<T extends Unit> {
 
     private void validateArithmeticOperation(Quantity<T> other, T targetUnit) {
         if (other == null || targetUnit == null) {
-            throw new IllegalArgumentException("Cannot perform arithmetic with a null quantity or specify a null target unit.");
+            throw new IllegalArgumentException(
+                    "Cannot perform arithmetic with a null quantity or specify a null target unit.");
         }
 
         if (!this.unit.supportsArithmetic() || !other.getUnit().supportsArithmetic()) {
             throw new UnsupportedOperationException("Arithmetic operations are not supported for this unit category.");
         }
         
-        Class<?> thisCategory = this.unit instanceof Enum ? ((Enum<?>) this.unit).getDeclaringClass() : this.unit.getClass();
-        Class<?> otherCategory = other.unit instanceof Enum ? ((Enum<?>) other.unit).getDeclaringClass() : other.unit.getClass();
-        
-        if (!thisCategory.equals(otherCategory)) {
-            throw new IllegalArgumentException("Cannot perform arithmetic on quantities of different measurement categories.");
+        if (this.unit.getClass() != other.unit.getClass()) {
+            throw new IllegalArgumentException(
+                    "Cannot perform arithmetic on quantities of different measurement categories.");
         }
     }
 
@@ -72,21 +71,6 @@ public class Quantity<T extends Unit> {
         return performOperation(other, targetUnit, ArithmeticOperation.SUBTRACT);
     }
 
-    public boolean equals(Quantity<T> quantity) {
-        if (quantity == null) {
-            return false;
-        }
-
-        Class<?> thisCategory = this.unit instanceof Enum ? ((Enum<?>) this.unit).getDeclaringClass() : this.unit.getClass();
-        Class<?> otherCategory = quantity.unit instanceof Enum ? ((Enum<?>) quantity.unit).getDeclaringClass() : quantity.unit.getClass();
-        
-        if (!thisCategory.equals(otherCategory)) {
-            return false;
-        }
-
-        return Math.abs(this.getBaseValue() - quantity.getBaseValue()) < DIFFERENCE;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -95,9 +79,11 @@ public class Quantity<T extends Unit> {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        @SuppressWarnings("unchecked")
-        Quantity<T> quantity = (Quantity<T>) obj;
-        return this.equals(quantity);
+        Quantity<?> other = (Quantity<?>) obj;
+        if (this.unit.getClass() != other.unit.getClass()) {
+            return false;
+        }
+        return Math.abs(this.getBaseValue() - other.getBaseValue()) < DIFFERENCE;
     }
 
     @Override

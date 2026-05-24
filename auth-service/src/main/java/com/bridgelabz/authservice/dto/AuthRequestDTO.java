@@ -3,7 +3,7 @@ package com.bridgelabz.authservice.dto;
 public class AuthRequestDTO {
     private String email;
     private String password;
-    private String name; // Used for signup
+    private String name; 
 
     public AuthRequestDTO() {}
 
