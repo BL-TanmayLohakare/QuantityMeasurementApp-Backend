@@ -1,11 +1,18 @@
 package com.bridgelabz.qmaservice.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class QuantityRequestDTO {
     private double value1;
+
+    @NotBlank(message = "Unit1 must not be blank")
     private String unit1;
+
     private double value2;
     private String unit2;
     private String targetUnit;
+
+    @NotBlank(message = "Category must not be blank")
     private String category; 
 
     

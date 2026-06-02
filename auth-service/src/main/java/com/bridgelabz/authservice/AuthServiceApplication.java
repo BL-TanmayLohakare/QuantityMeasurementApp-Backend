@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @SpringBootApplication
 @EnableDiscoveryClient
@@ -13,6 +15,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "com.bridgelabz.authservice.model")
 @EnableJpaRepositories(basePackages = "com.bridgelabz.authservice.repository")
 public class AuthServiceApplication {
+    private static final Logger logger = LogManager.getLogger(AuthServiceApplication.class);
+
     public static void main(String[] args) {
         SpringApplication.run(AuthServiceApplication.class, args);
     }

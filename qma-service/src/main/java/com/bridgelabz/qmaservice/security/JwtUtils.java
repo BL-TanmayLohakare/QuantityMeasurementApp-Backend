@@ -17,7 +17,7 @@ public class JwtUtils {
     @Value("${qma.app.jwtSecret:DefaultSecretKeyForJwtAuthenticationOnlyForDevelopmentPurpose}")
     private String jwtSecret;
 
-    @Value("${qma.app.jwtExpirationMs:86400000}")
+    @Value("${qma.app.jwtExpirationMs:900000}")
     private int jwtExpirationMs;
 
     public String generateJwtToken(String email) {

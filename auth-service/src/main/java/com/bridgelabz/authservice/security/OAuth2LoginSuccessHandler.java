@@ -1,8 +1,10 @@
 package com.bridgelabz.authservice.security;
 
+import com.bridgelabz.authservice.model.RefreshToken;
 import com.bridgelabz.authservice.model.User;
 import com.bridgelabz.authservice.repository.UserRepository;
 import com.bridgelabz.authservice.security.JwtUtils;
+import com.bridgelabz.authservice.service.RefreshTokenService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,6 +28,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws IOException, ServletException {
@@ -40,9 +45,11 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
 
         String token = jwtUtils.generateJwtToken(email);
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(email);
 
         String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/")
                 .queryParam("token", token)
+                .queryParam("refreshToken", refreshToken.getToken())
                 .build().toUriString();
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
